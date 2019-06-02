@@ -16,7 +16,7 @@ body{
 a{
     text-decoration:none !important;
 }
-h1,h2,h3{
+h1,h2,h3,h4{
     font-family: 'Kaushan Script', cursive;
 }
 .myform{
@@ -68,12 +68,48 @@ h1,h2,h3{
 form .error {
     color: #ff0000;
 }
-#second{display:none;}
+
 .btn-own {
     background: #d85e7e;
     color: white;
 }
-.btn-own:hover {
-    
+.btn-own:hover {    
     background: #cb2250;
+}
+
+#password_info {
+    background: #d85e7e none repeat scroll 0 0;
+    color: #fff;
+    left: 20px;
+    position: absolute;
+    top: -60px;
+}
+#password_info h4{
+    background: #cb2250 none repeat scroll 0 0;
+    display: block;
+    font-size: 14px;
+    letter-spacing: 0;
+    padding: 15px 0;
+    text-align: center;
+    text-transform: uppercase;
+}
+#password_info ul {
+    list-style: outside none none;
+}
+#password_info ul li {
+   padding: 10px;
+}
+
+#password_info::before {
+    background: #cb2250 none repeat scroll 0 0;
+    content: "";
+    height: 25px;
+    left: 5px;
+    margin-top: -12.5px;
+    position: absolute;
+    transform: rotate(45deg);
+    width: 25px;
+}
+#password_info {
+    display:none;
 }
