@@ -39,40 +39,21 @@
         
         <div class="container">
             <div class="row">
-                <div class="col l6 offset-l3" >
+                <div class="col s6 offset-s3" >
                     <div class="row menu blue darken-3 valign-wrapper">
-                        <div class="col l2" style="margin-left:0;"> 
+                        <div class="col s2" style="margin-left:0;"> 
                             <img src="https://www.faceplusplus.com/images/comparing/left_pic_three.jpg" alt="" class="responsive-img circle">
                         </div>
-                        <div class="col l6" style="margin-left:0;">
+                        <div class="col s6" style="margin-left:0;">
                             <h4>Imię Nazwisko</h4>
                         </div>
-                        <div class="col l2">                            
+                        <div class="col s2">                            
                             <button class="dropdown-trigger waves-effect waves-teal btn-flat" data-target="dropdown" style="width: 100%; height:100%;">
                                 <i class="material-icons blue-text text-lighten-4">settings</i>
                             </button>
                         </div>
                     </div>
-                    <div class="row blue messages" style="height:300px;">
-
-                        <div class="other">
-                            <div class="row">
-                                <div class="col l2">
-                                        <img src="https://www.faceplusplus.com/images/comparing/left_pic_three.jpg" alt="" class="responsive-img circle">
-                                </div>
-                                <div class="col l6">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-                            </div>
-                        </div>
-
-                        <div class="me">
-                            <div class="row blue darken-2">
-                                <div class="col l2 push-l10">
-                                        <img src="https://blog.mapillary.com/img/gerhard.png" alt="" class="responsive-img circle">
-                                </div>
-                                <div class="col l6 push-l4">dsadasdasdas</div>
-                            </div>
-                        </div>
-
+                    <div id="chat" class="row blue messages" style="height:300px;">
                         
                     </div>
                     <div class="row writer blue darken-3">
@@ -91,14 +72,16 @@
                                     <i class="material-icons blue-text text-lighten-4">face</i>
                                 </button>
                             </div>
-                        <div class="col l7" style="">
-                            <textarea id="textarea" class="materialize-textarea blue-text text-lighten-4" style="padding: 0; height: 36px !important; min-height: 0;"></textarea>
-                        </div>
-                        <div class="col l2" style="padding:0">
-                            <button class="waves-effect waves-teal btn-flat" style="padding:0; width: 100%">
-                                <i class="material-icons blue-text text-lighten-4">send</i>
-                            </button>
-                        </div>
+                        <form action="">
+                            <div class="col l7" style="">
+                                <textarea id="textarea" class="materialize-textarea blue-text text-lighten-4" style="padding: 0; height: 36px !important; min-height: 0;"></textarea>
+                            </div>
+                            <div class="col l2" style="padding:0">
+                                <button class="waves-effect waves-teal btn-flat" style="padding:0; width: 100%">
+                                    <i class="material-icons blue-text text-lighten-4">send</i>
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -106,11 +89,55 @@
 
 
       <!--JavaScript at end of body for optimized loading-->
-      <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-      <script>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script>
             $(document).ready(function(){
-              $(".dropdown-trigger").dropdown();
+                $(".dropdown-trigger").dropdown();
+            });
+
+            
+        </script>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            const socket = io();
+
+            $('form').submit(function(){
+                socket.emit('message', $('#textarea').val(), window.location.pathname);
+                $('#textarea').val('');
+                return false;
+            });
+
+            photoA = 'https://www.faceplusplus.com/images/comparing/left_pic_three.jpg'
+            photoB = 'https://blog.mapillary.com/img/gerhard.png'
+
+            beforePhotoLeft = '<div class="other">' + 
+            '<div class="row">' + 
+            '<div class="col s2">' +
+            '<img src="'
+            beforePhotoRight = '<div class="me">' + 
+            '<div class="row blue darken-2">' + 
+            '<div class="col s2 push-l10">' +
+            '<img src="'
+
+            afterPhotoLeft = '" alt="" class="responsive-img circle">' +
+            '</div>' + 
+            '<div class="col s6">'
+            afterPhotoRight = '" alt="" class="responsive-img circle">' +
+            '</div>' + 
+            '<div class="col s6 push-l4">'
+
+            end = '</div>' + 
+            '</div>' +
+            '</div>'
+
+            socket.on('message', function(msg, path){
+                console.log(beforePhotoRight + (path=='/ALFRED'?photoA:photoB) + afterPhotoRight + msg + end)
+                if(path == window.location.pathname)
+                    $('#chat').append((beforePhotoRight + (path=='/ALFRED'?photoA:photoB) + afterPhotoRight + msg + end));
+                else
+                    $('#chat').append((beforePhotoLeft + (path=='/ALFRED'?photoA:photoB) + afterPhotoLeft + msg + end));
             });
         </script>
     </body>
